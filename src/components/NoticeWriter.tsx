@@ -262,40 +262,49 @@ If any uncertain situation arises, you will be responsible yourself, and please 
     switch (step) {
       case 1:
         return (
-          <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-            <h2 style={{ textAlign: "center", marginBottom: "30px" }}>
-              {language === "hi" ? "न्यायालयीन नोटिस लेखक" : "Court Notice Writer"}
-            </h2>
+          <div
+            style={{
+              padding: "40px",
+              maxWidth: "700px",
+              margin: "0 auto",
+              backgroundColor: "white",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+          >
 
-            <div style={{ marginBottom: "30px" }}>
-              <label style={{ display: "block", marginBottom: "10px", fontWeight: "bold" }}>
-                {language === "hi" ? "भाषा चुनें:" : "Select Language:"}
-              </label>
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as "en" | "hi")}
-                style={{ padding: "8px", width: "200px", marginBottom: "20px" }}
-              >
-                <option value="hi">हिंदी</option>
-                <option value="en">English</option>
-              </select>
-            </div>
 
             <div>
-              <h3 style={{ marginBottom: "20px" }}>
+              <h3
+                style={{
+                  marginBottom: "25px",
+                  fontSize: "1.4rem",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  color: "black",
+                }}
+              >
                 {language === "hi" ? "नोटिस का प्रकार चुनें:" : "Select Notice Type:"}
               </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                 <button
                   onClick={() => handleNoticeTypeSelect("regular")}
                   style={{
-                    padding: "15px",
-                    backgroundColor: "#4CAF50",
+                    padding: "20px 30px",
+                    backgroundColor: "#3b82f6",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
-                    fontSize: "16px",
+                    fontSize: "1.1rem",
+                    fontWeight: "600",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#2563eb"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#3b82f6"
                   }}
                 >
                   {language === "hi" ? "नियमित नोटिस" : "Regular Notice"}
@@ -303,13 +312,21 @@ If any uncertain situation arises, you will be responsible yourself, and please 
                 <button
                   onClick={() => handleNoticeTypeSelect("contempt")}
                   style={{
-                    padding: "15px",
-                    backgroundColor: "#f44336",
+                    padding: "20px 30px",
+                    backgroundColor: "#3b82f6",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
-                    fontSize: "16px",
+                    fontSize: "1.1rem",
+                    fontWeight: "600",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#2563eb"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#3b82f6"
                   }}
                 >
                   {language === "hi" ? "अवमानना नोटिस" : "Contempt Notice"}
@@ -317,13 +334,21 @@ If any uncertain situation arises, you will be responsible yourself, and please 
                 <button
                   onClick={() => handleNoticeTypeSelect("custom")}
                   style={{
-                    padding: "15px",
-                    backgroundColor: "#2196F3",
+                    padding: "20px 30px",
+                    backgroundColor: "#3b82f6",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
-                    fontSize: "16px",
+                    fontSize: "1.1rem",
+                    fontWeight: "600",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#2563eb"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#3b82f6"
                   }}
                 >
                   {language === "hi" ? "कस्टम नोटिस" : "Custom Notice"}
@@ -335,27 +360,71 @@ If any uncertain situation arises, you will be responsible yourself, and please 
 
       case 2:
         return (
-          <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-            <h3>{language === "hi" ? "विभाग चुनें:" : "Select Department:"}</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "20px" }}>
+          <div
+            style={{
+              padding: "30px",
+              maxWidth: "800px",
+              margin: "0 auto",
+              backgroundColor: "white",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h2
+              style={{
+                color: "black",
+                marginBottom: "30px",
+                fontSize: "1.8rem",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {language === "hi" ? "विभाग चुनें" : "Select Department"}
+            </h2>
+            <div style={{ display: "grid", gap: "15px", marginTop: "20px" }}>
               {departments.map((dept) => (
                 <button
                   key={dept.id}
                   onClick={() => handleDepartmentSelect(dept)}
                   style={{
-                    padding: "12px",
-                    backgroundColor: "#e3f2fd",
-                    border: "1px solid #2196F3",
-                    borderRadius: "5px",
+                    padding: "20px",
+                    backgroundColor: "white",
+                    border: "2px solid #3b82f6",
+                    borderRadius: "8px",
                     cursor: "pointer",
                     textAlign: "left",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    color: "black",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#3b82f6"
+                    e.currentTarget.style.color = "white"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "white"
+                    e.currentTarget.style.color = "black"
                   }}
                 >
                   {language === "hi" ? dept.name_hi : dept.name_en}
                 </button>
               ))}
             </div>
-            <button onClick={resetForm} style={{ marginTop: "20px", padding: "10px 20px" }}>
+            <button
+              onClick={resetForm}
+              style={{
+                marginTop: "30px",
+                padding: "12px 30px",
+                backgroundColor: "#6b7280",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontSize: "1rem",
+                fontWeight: "500",
+              }}
+            >
               {language === "hi" ? "वापस" : "Back"}
             </button>
           </div>
@@ -363,23 +432,75 @@ If any uncertain situation arises, you will be responsible yourself, and please 
 
       case 3:
         return (
-          <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-            <h3>{language === "hi" ? "उप-विभाग चुनें:" : "Select Sub-Department:"}</h3>
+          <div
+            style={{
+              padding: "30px",
+              maxWidth: "800px",
+              margin: "0 auto",
+              backgroundColor: "white",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h2
+              style={{
+                color: "black",
+                marginBottom: "30px",
+                fontSize: "1.8rem",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {language === "hi" ? "उप-विभाग चुनें" : "Select Sub-Department"}
+            </h2>
             {loading ? (
-              <p>{language === "hi" ? "लोड हो रहा है..." : "Loading..."}</p>
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "40px",
+                  color: "black",
+                  fontSize: "1.2rem",
+                }}
+              >
+                <div
+                  style={{
+                    display: "inline-block",
+                    width: "40px",
+                    height: "40px",
+                    border: "4px solid #e5e7eb",
+                    borderTop: "4px solid #3b82f6",
+                    borderRadius: "50%",
+                    animation: "spin 1s linear infinite",
+                    marginBottom: "20px",
+                  }}
+                ></div>
+                <div>{language === "hi" ? "लोड हो रहा है..." : "Loading..."}</div>
+              </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "20px" }}>
+              <div style={{ display: "grid", gap: "15px", marginTop: "20px" }}>
                 {subDepartments.map((subDept) => (
                   <button
                     key={subDept._id}
                     onClick={() => handleSubDepartmentSelect(subDept)}
                     style={{
-                      padding: "12px",
-                      backgroundColor: "#e8f5e8",
-                      border: "1px solid #4CAF50",
-                      borderRadius: "5px",
+                      padding: "20px",
+                      backgroundColor: "white",
+                      border: "2px solid #3b82f6",
+                      borderRadius: "8px",
                       cursor: "pointer",
                       textAlign: "left",
+                      fontSize: "1.1rem",
+                      fontWeight: "500",
+                      color: "black",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#3b82f6"
+                      e.currentTarget.style.color = "white"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "white"
+                      e.currentTarget.style.color = "black"
                     }}
                   >
                     {language === "hi" ? subDept.name_hi : subDept.name_en}
@@ -391,18 +512,43 @@ If any uncertain situation arises, you will be responsible yourself, and please 
                     setStep(4)
                   }}
                   style={{
-                    padding: "12px",
-                    backgroundColor: "#fff3e0",
-                    border: "1px solid #ff9800",
-                    borderRadius: "5px",
+                    padding: "20px",
+                    backgroundColor: "white",
+                    border: "2px solid #3b82f6",
+                    borderRadius: "8px",
                     cursor: "pointer",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    color: "black",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#3b82f6"
+                    e.currentTarget.style.color = "white"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "white"
+                    e.currentTarget.style.color = "black"
                   }}
                 >
                   {language === "hi" ? "सभी केसेस देखें (बिना उप-विभाग)" : "View All Cases (Without Sub-Department)"}
                 </button>
               </div>
             )}
-            <button onClick={() => setStep(2)} style={{ marginTop: "20px", padding: "10px 20px" }}>
+            <button
+              onClick={() => setStep(2)}
+              style={{
+                marginTop: "30px",
+                padding: "12px 30px",
+                backgroundColor: "#6b7280",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontSize: "1rem",
+                fontWeight: "500",
+              }}
+            >
               {language === "hi" ? "वापस" : "Back"}
             </button>
           </div>
@@ -410,42 +556,100 @@ If any uncertain situation arises, you will be responsible yourself, and please 
 
       case 4:
         return (
-          <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-            <h3>{language === "hi" ? "केस चुनें:" : "Select Case:"}</h3>
+          <div
+            style={{
+              padding: "30px",
+              maxWidth: "900px",
+              margin: "0 auto",
+              backgroundColor: "white",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h2
+              style={{
+                color: "black",
+                marginBottom: "30px",
+                fontSize: "1.8rem",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {language === "hi" ? "केस चुनें" : "Select Case"}
+            </h2>
             {loading ? (
-              <p>{language === "hi" ? "लोड हो रहा है..." : "Loading..."}</p>
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "40px",
+                  color: "black",
+                  fontSize: "1.2rem",
+                }}
+              >
+                <div
+                  style={{
+                    display: "inline-block",
+                    width: "40px",
+                    height: "40px",
+                    border: "4px solid #e5e7eb",
+                    borderTop: "4px solid #3b82f6",
+                    borderRadius: "50%",
+                    animation: "spin 1s linear infinite",
+                    marginBottom: "20px",
+                  }}
+                ></div>
+                <div>{language === "hi" ? "लोड हो रहा है..." : "Loading..."}</div>
+              </div>
             ) : (
               <div style={{ marginTop: "20px" }}>
                 {cases.length === 0 ? (
-                  <p>{language === "hi" ? "कोई केस नहीं मिला" : "No cases found"}</p>
+                  <div
+                    style={{
+                      textAlign: "center",
+                      padding: "40px",
+                      color: "#6b7280",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    {language === "hi" ? "कोई केस नहीं मिला" : "No cases found"}
+                  </div>
                 ) : (
-                  <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                  <div style={{ display: "grid", gap: "20px" }}>
                     {cases.map((caseItem) => (
                       <div
                         key={caseItem._id}
                         onClick={() => handleCaseSelect(caseItem)}
                         style={{
-                          padding: "15px",
-                          border: "1px solid #ddd",
-                          borderRadius: "5px",
+                          padding: "25px",
+                          border: "2px solid #e5e7eb",
+                          borderRadius: "8px",
                           cursor: "pointer",
-                          backgroundColor: "#f9f9f9",
-                          transition: "background-color 0.2s",
+                          backgroundColor: "white",
+                          transition: "all 0.2s ease",
+                          color: "black",
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0f0f0")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#f9f9f9")}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = "#3b82f6"
+                          e.currentTarget.style.color = "white"
+                          e.currentTarget.style.borderColor = "#3b82f6"
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "white"
+                          e.currentTarget.style.color = "black"
+                          e.currentTarget.style.borderColor = "#e5e7eb"
+                        }}
                       >
-                        <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
+                        <div style={{ fontWeight: "bold", marginBottom: "10px", fontSize: "1.2rem" }}>
                           {language === "hi" ? "केस नंबर:" : "Case Number:"} {caseItem.caseNumber}
                         </div>
-                        <div style={{ marginBottom: "5px" }}>
+                        <div style={{ marginBottom: "8px", fontSize: "1.1rem" }}>
                           {language === "hi" ? "नाम:" : "Name:"} {caseItem.name}
                         </div>
-                        <div style={{ marginBottom: "5px" }}>
+                        <div style={{ marginBottom: "8px" }}>
                           {language === "hi" ? "दाखिल दिनांक:" : "Filing Date:"}{" "}
                           {new Date(caseItem.filingDate).toLocaleDateString()}
                         </div>
-                        <div style={{ color: caseItem.status === "Pending" ? "#f44336" : "#4CAF50" }}>
+                        <div style={{ fontWeight: "600", fontSize: "1rem" }}>
                           {language === "hi" ? "स्थिति:" : "Status:"} {caseItem.status}
                         </div>
                       </div>
@@ -454,7 +658,20 @@ If any uncertain situation arises, you will be responsible yourself, and please 
                 )}
               </div>
             )}
-            <button onClick={() => setStep(3)} style={{ marginTop: "20px", padding: "10px 20px" }}>
+            <button
+              onClick={() => setStep(3)}
+              style={{
+                marginTop: "30px",
+                padding: "12px 30px",
+                backgroundColor: "#6b7280",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontSize: "1rem",
+                fontWeight: "500",
+              }}
+            >
               {language === "hi" ? "वापस" : "Back"}
             </button>
           </div>
@@ -462,92 +679,239 @@ If any uncertain situation arises, you will be responsible yourself, and please 
 
       case 5:
         return (
-          <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-            <h3>{language === "hi" ? "नोटिस संपादित करें:" : "Edit Notice:"}</h3>
-            <div style={{ marginTop: "20px" }}>
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "पत्र संख्या:" : "Letter Number:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.letterNumber}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, letterNumber: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                />
+          <div
+            style={{
+              padding: "30px",
+              maxWidth: "900px",
+              margin: "0 auto",
+              backgroundColor: "white",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h2
+              style={{
+                color: "black",
+                marginBottom: "30px",
+                fontSize: "1.8rem",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {language === "hi" ? "नोटिस संपादित करें" : "Edit Notice"}
+            </h2>
+            <div style={{ display: "grid", gap: "20px", marginTop: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "पत्र संख्या:" : "Letter Number:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.letterNumber}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, letterNumber: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "दिनांक:" : "Date:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.date}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, date: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "दिनांक:" : "Date:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.date}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, date: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontWeight: "600",
+                    color: "black",
+                    fontSize: "1rem",
+                  }}
+                >
                   {language === "hi" ? "विषय:" : "Subject:"}
                 </label>
                 <input
                   type="text"
                   value={noticeData.subject}
                   onChange={(e) => setNoticeData((prev) => ({ ...prev, subject: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    border: "2px solid #e5e7eb",
+                    borderRadius: "8px",
+                    fontSize: "1rem",
+                    transition: "border-color 0.2s ease",
+                    outline: "none",
+                    color: "black",
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
                 />
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontWeight: "600",
+                    color: "black",
+                    fontSize: "1rem",
+                  }}
+                >
                   {language === "hi" ? "सामग्री:" : "Content:"}
                 </label>
                 <textarea
                   value={noticeData.content}
                   onChange={(e) => setNoticeData((prev) => ({ ...prev, content: e.target.value }))}
-                  rows={15}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
+                  rows={12}
+                  style={{
+                    width: "100%",
+                    padding: "16px",
+                    border: "2px solid #e5e7eb",
+                    borderRadius: "8px",
+                    fontSize: "1rem",
+                    fontFamily: "inherit",
+                    resize: "vertical",
+                    transition: "border-color 0.2s ease",
+                    outline: "none",
+                    color: "black",
+                  }}
+                  onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
                 />
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "हस्ताक्षरकर्ता:" : "Signatory:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.signatory}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, signatory: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "हस्ताक्षरकर्ता:" : "Signatory:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.signatory}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, signatory: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "पदनाम:" : "Designation:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.designation}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, designation: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "पदनाम:" : "Designation:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.designation}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, designation: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                />
-              </div>
-
-              <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+              <div style={{ display: "flex", gap: "15px", marginTop: "30px", justifyContent: "center" }}>
                 <button
                   onClick={handlePrint}
                   style={{
-                    padding: "12px 24px",
-                    backgroundColor: "#4CAF50",
+                    padding: "15px 40px",
+                    backgroundColor: "#3b82f6",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
-                    fontSize: "16px",
+                    fontSize: "1.1rem",
+                    fontWeight: "600",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#2563eb"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#3b82f6"
                   }}
                 >
                   {language === "hi" ? "प्रिंट करें" : "Print Notice"}
@@ -555,12 +919,14 @@ If any uncertain situation arises, you will be responsible yourself, and please 
                 <button
                   onClick={() => setStep(4)}
                   style={{
-                    padding: "12px 24px",
-                    backgroundColor: "#2196F3",
+                    padding: "15px 30px",
+                    backgroundColor: "#6b7280",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
+                    fontSize: "1rem",
+                    fontWeight: "500",
                   }}
                 >
                   {language === "hi" ? "वापस" : "Back"}
@@ -568,12 +934,14 @@ If any uncertain situation arises, you will be responsible yourself, and please 
                 <button
                   onClick={resetForm}
                   style={{
-                    padding: "12px 24px",
-                    backgroundColor: "#f44336",
+                    padding: "15px 30px",
+                    backgroundColor: "#6b7280",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
+                    fontSize: "1rem",
+                    fontWeight: "500",
                   }}
                 >
                   {language === "hi" ? "नया नोटिस" : "New Notice"}
@@ -585,97 +953,244 @@ If any uncertain situation arises, you will be responsible yourself, and please 
 
       case 6: // Custom notice
         return (
-          <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-            <h3>{language === "hi" ? "कस्टम नोटिस बनाएं:" : "Create Custom Notice:"}</h3>
-            <div style={{ marginTop: "20px" }}>
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "पत्र संख्या:" : "Letter Number:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.letterNumber}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, letterNumber: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                  placeholder={language === "hi" ? "पत्र संख्या दर्ज करें" : "Enter letter number"}
-                />
+          <div
+            style={{
+              padding: "30px",
+              maxWidth: "900px",
+              margin: "0 auto",
+              backgroundColor: "white",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h2
+              style={{
+                color: "black",
+                marginBottom: "30px",
+                fontSize: "1.8rem",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {language === "hi" ? "कस्टम नोटिस बनाएं" : "Create Custom Notice"}
+            </h2>
+            <div style={{ display: "grid", gap: "20px", marginTop: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "पत्र संख्या:" : "Letter Number:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.letterNumber}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, letterNumber: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    placeholder={language === "hi" ? "पत्र संख्या दर्ज करें" : "Enter letter number"}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "दिनांक:" : "Date:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.date}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, date: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "दिनांक:" : "Date:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.date}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, date: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                />
-              </div>
-
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontWeight: "600",
+                    color: "black",
+                    fontSize: "1rem",
+                  }}
+                >
                   {language === "hi" ? "विषय:" : "Subject:"}
                 </label>
                 <input
                   type="text"
                   value={noticeData.subject}
                   onChange={(e) => setNoticeData((prev) => ({ ...prev, subject: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
+                  style={{
+                    width: "100%",
+                    padding: "12px 16px",
+                    border: "2px solid #e5e7eb",
+                    borderRadius: "8px",
+                    fontSize: "1rem",
+                    transition: "border-color 0.2s ease",
+                    outline: "none",
+                    color: "black",
+                  }}
                   placeholder={language === "hi" ? "विषय दर्ज करें" : "Enter subject"}
+                  onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
                 />
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
+              <div>
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    fontWeight: "600",
+                    color: "black",
+                    fontSize: "1rem",
+                  }}
+                >
                   {language === "hi" ? "नोटिस की सामग्री:" : "Notice Content:"}
                 </label>
                 <textarea
                   value={noticeData.content}
                   onChange={(e) => setNoticeData((prev) => ({ ...prev, content: e.target.value }))}
-                  rows={20}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
+                  rows={15}
+                  style={{
+                    width: "100%",
+                    padding: "16px",
+                    border: "2px solid #e5e7eb",
+                    borderRadius: "8px",
+                    fontSize: "1rem",
+                    fontFamily: "inherit",
+                    resize: "vertical",
+                    transition: "border-color 0.2s ease",
+                    outline: "none",
+                    color: "black",
+                  }}
                   placeholder={language === "hi" ? "अपना नोटिस यहाँ लिखें..." : "Write your notice here..."}
+                  onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                  onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
                 />
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "हस्ताक्षरकर्ता:" : "Signatory:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.signatory}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, signatory: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                  placeholder={language === "hi" ? "हस्ताक्षरकर्ता का नाम" : "Signatory name"}
-                />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "हस्ताक्षरकर्ता:" : "Signatory:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.signatory}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, signatory: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    placeholder={language === "hi" ? "हस्ताक्षरकर्ता का नाम" : "Signatory name"}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      marginBottom: "8px",
+                      fontWeight: "600",
+                      color: "black",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    {language === "hi" ? "पदनाम:" : "Designation:"}
+                  </label>
+                  <input
+                    type="text"
+                    value={noticeData.designation}
+                    onChange={(e) => setNoticeData((prev) => ({ ...prev, designation: e.target.value }))}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      border: "2px solid #e5e7eb",
+                      borderRadius: "8px",
+                      fontSize: "1rem",
+                      transition: "border-color 0.2s ease",
+                      outline: "none",
+                      color: "black",
+                    }}
+                    placeholder={language === "hi" ? "पदनाम दर्ज करें" : "Enter designation"}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#e5e7eb")}
+                  />
+                </div>
               </div>
 
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px", fontWeight: "bold" }}>
-                  {language === "hi" ? "पदनाम:" : "Designation:"}
-                </label>
-                <input
-                  type="text"
-                  value={noticeData.designation}
-                  onChange={(e) => setNoticeData((prev) => ({ ...prev, designation: e.target.value }))}
-                  style={{ width: "100%", padding: "8px", border: "1px solid #ddd", borderRadius: "4px" }}
-                  placeholder={language === "hi" ? "पदनाम दर्ज करें" : "Enter designation"}
-                />
-              </div>
-
-              <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+              <div style={{ display: "flex", gap: "15px", marginTop: "30px", justifyContent: "center" }}>
                 <button
                   onClick={handlePrint}
                   style={{
-                    padding: "12px 24px",
-                    backgroundColor: "#4CAF50",
+                    padding: "15px 40px",
+                    backgroundColor: "#3b82f6",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
-                    fontSize: "16px",
+                    fontSize: "1.1rem",
+                    fontWeight: "600",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#2563eb"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#3b82f6"
                   }}
                 >
                   {language === "hi" ? "प्रिंट करें" : "Print Notice"}
@@ -683,12 +1198,14 @@ If any uncertain situation arises, you will be responsible yourself, and please 
                 <button
                   onClick={resetForm}
                   style={{
-                    padding: "12px 24px",
-                    backgroundColor: "#f44336",
+                    padding: "15px 30px",
+                    backgroundColor: "#6b7280",
                     color: "white",
                     border: "none",
-                    borderRadius: "5px",
+                    borderRadius: "8px",
                     cursor: "pointer",
+                    fontSize: "1rem",
+                    fontWeight: "500",
                   }}
                 >
                   {language === "hi" ? "वापस" : "Back"}
@@ -705,8 +1222,59 @@ If any uncertain situation arises, you will be responsible yourself, and please 
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: printStyles }} />
-      <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        ${printStyles}
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `,
+        }}
+      />
+
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "white",
+          padding: "20px",
+        }}
+      >
+        {/* Language Toggle Button - Always Visible */}
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 1000,
+          }}
+          className="no-print"
+        >
+          <button
+            onClick={() => setLanguage(language === "hi" ? "en" : "hi")}
+            style={{
+              padding: "12px 20px",
+              backgroundColor: "#3b82f6",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "1rem",
+              fontWeight: "600",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#2563eb"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#3b82f6"
+            }}
+          >
+            {language === "hi" ? "English" : "हिंदी"}
+          </button>
+        </div>
+
         <div className="no-print">{renderStep()}</div>
 
         {/* Print Template */}
