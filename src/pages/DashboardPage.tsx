@@ -29,7 +29,7 @@ const DashboardPage: React.FC = () => {
   // Fetch all cases
   const { data: casesData, isLoading: loadingCases } = useQuery({
     queryKey: ['cases'],
-    queryFn: fetchCases,
+    queryFn: async () => fetchCases(),
     enabled: !!selectedDeptId,
   });
 
@@ -286,6 +286,7 @@ const DashboardPage: React.FC = () => {
       {showAddSubDept && (
         <AddSubDepartmentForm
           departments={departments}
+          currentLang={currentLang}
           onSubmit={handleAddSubDepartment}
           onClose={() => setShowAddSubDept(false)}
         />

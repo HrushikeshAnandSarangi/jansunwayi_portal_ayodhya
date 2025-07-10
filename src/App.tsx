@@ -54,6 +54,9 @@ const App = () => (
               <Route path="/print-case/:subDepartmentId" >
                 <Route index element={<PrintCasePage/>} />
               </Route>
+              <Route path="/print-case/" >
+                <Route index element={<PrintCasePage/>} />
+              </Route>
               <Route path="/add-case" element={<Layout requireAuth />}>
                 <Route index element={<AddCasePage />} />
               </Route>

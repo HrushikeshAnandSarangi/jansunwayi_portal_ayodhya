@@ -73,6 +73,7 @@ const ContemptCasesPage: React.FC = () => {
       department: "Department",
       actions: "Actions",
       viewDetails: "View Details",
+      printDetails:"Print Details",
       noCases: "No contempt cases found",
       noCasesMessage: "No contempt cases have been added yet.",
       totalCases: "Total Contempt Cases",
@@ -96,6 +97,7 @@ const ContemptCasesPage: React.FC = () => {
       department: "विभाग",
       actions: "कार्रवाई",
       viewDetails: "विवरण देखें",
+      printDetails:"मुद्रण विवरण",
       noCases: "कोई अवमानना मामला नहीं मिला",
       noCasesMessage: "अभी तक कोई अवमानना मामला नहीं जोड़ा गया है।",
       totalCases: "कुल अवमानना मामले",
@@ -291,6 +293,11 @@ const ContemptCasesPage: React.FC = () => {
                       <Link to={`/case/${caseItem._id || caseItem.id}`}>
                         <Button variant="outline" size="sm">
                           {t.viewDetails}
+                        </Button>
+                      </Link>
+                      <Link to={`/print-case/`}>
+                        <Button variant="outline" size="sm">
+                          {t.printDetails}
                         </Button>
                       </Link>
                     </td>
