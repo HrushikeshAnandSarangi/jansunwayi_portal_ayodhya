@@ -28,7 +28,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const login = async (email: string, password: string, role: 'admin' | 'user') => {
     if (role !== 'admin') throw new Error('Only admin login is supported');
     try {
-      const res = await fetch('https://jansunwayi-portal-app-71-main.vercel.app/admin/login', {
+      const res = await fetch('https://jansunwayi-portal-ayodhya.onrender.com/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

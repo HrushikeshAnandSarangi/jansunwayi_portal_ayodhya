@@ -45,7 +45,7 @@ interface NoticeData {
   designation: string
 }
 
-const API_BASE = "https://jansunwayi-portal-app-71-main.vercel.app/"
+const API_BASE = "https://jansunwayi-portal-ayodhya.onrender.com/"
 
 const printStyles = `
   @media print {
