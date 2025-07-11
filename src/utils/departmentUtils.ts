@@ -186,7 +186,7 @@ export const uploadDepartmentsToFirestore = async (departments: any[]) => {
 // Function to fetch sub-departments from database and merge with static data
 export const getSubDepartmentsForDepartment = async (departmentId: number) => {
   try {
-    const response = await fetch(`http://localhost:5000/sub-departments?departmentId=${departmentId}`);
+    const response = await fetch(`https://jansunwayi-portal-app-71-main.vercel.app/sub-departments?departmentId=${departmentId}`);
     if (response.ok) {
       const dbSubDepts = await response.json();
       // Merge with static sub-departments (for department 1)

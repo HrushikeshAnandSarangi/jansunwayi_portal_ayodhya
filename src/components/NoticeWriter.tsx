@@ -45,7 +45,7 @@ interface NoticeData {
   designation: string
 }
 
-const API_BASE = "http://localhost:5000"
+const API_BASE = "https://jansunwayi-portal-app-71-main.vercel.app/"
 
 const printStyles = `
   @media print {

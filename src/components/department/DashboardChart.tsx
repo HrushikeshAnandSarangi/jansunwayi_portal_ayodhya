@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCases, Case } from '@/lib/api';
-import SubDepartmentData from './SubDepartmentData';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+"use client"
+
+import type React from "react"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useQuery } from "@tanstack/react-query"
+import { fetchCases, type Case } from "@/lib/api"
+import SubDepartmentData from "./SubDepartmentData"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"
 
 const departments = [
   { id: 1, name_en: "Administration Department", name_hi: "प्रशासन विभाग" },
@@ -33,7 +36,7 @@ const departments = [
   { id: 25, name_en: "Rural Engineering Department (R.E.D.)", name_hi: "ग्रामीण अभियंत्रण विभाग (आर०ई०डी०)" },
   { id: 26, name_en: "Saryu Canal Division", name_hi: "सरयू नहर खण्ड" },
   { id: 27, name_en: "Flood Works Division", name_hi: "बाढ़ कार्य खण्ड" },
-  { id: 28, name_en: "Groundwater Department", name_hi: "भूगर्भ जल विभाग"},
+  { id: 28, name_en: "Groundwater Department", name_hi: "भूगर्भ जल विभाग" },
   { id: 29, name_en: "Lift Irrigation Division", name_hi: "लिफ्ट सिंचाई खण्ड" },
   { id: 30, name_en: "Tubewell Construction Division", name_hi: "नलकूप निर्माण खण्ड" },
   { id: 31, name_en: "U.P. Jal Nigam Urban Construction Division", name_hi: "उ0 प्र0 जल निगम नगरीय निर्माण खण्ड" },
@@ -50,117 +53,277 @@ const departments = [
   { id: 42, name_en: "Health Department", name_hi: "स्वास्थ्य विभाग" },
   { id: 43, name_en: "Stamp and Registration Department", name_hi: "स्टाम्प एवं रजिस्ट्रेशन विभाग" },
   { id: 44, name_en: "Ayodhya Development Authority Ayodhya", name_hi: "अयोध्या विकास प्राधिकरण अयोध्या" },
-  { id: 45, name_en: "Public Works Department Electrical & Mechanical Section", name_hi: "लोक निर्माण विभाग विद्युत यांत्रिक खण्ड" },
+  {
+    id: 45,
+    name_en: "Public Works Department Electrical & Mechanical Section",
+    name_hi: "लोक निर्माण विभाग विद्युत यांत्रिक खण्ड",
+  },
   { id: 46, name_en: "Cooperative Department", name_hi: "सहकारिता विभाग" },
-  { id: 47, name_en: "UPPCL U.P. Project Corporation Ltd. Construction Unit-11 Ayodhya", name_hi: "यूपीपीसीएल उ0 प्र0 प्रोजेक्ट कारपोरेशन लि0 निर्माण इकाई-11 अयोध्या।" },
+  {
+    id: 47,
+    name_en: "UPPCL U.P. Project Corporation Ltd. Construction Unit-11 Ayodhya",
+    name_hi: "यूपीपीसीएल उ0 प्र0 प्रोजेक्ट कारपोरेशन लि0 निर्माण इकाई-11 अयोध्या।",
+  },
   { id: 48, name_en: "Other Miscellaneous Departments", name_hi: "अन्य विविध विभाग" },
-];
+]
 
 // Helper to get counts for each department from a list of cases
 function getDepartmentStats(deptId: number, cases: { cases: Case[] } | undefined) {
-  if (!cases) return { total: 0, pending: 0, resolved: 0, contempt: 0 };
-
-  const casesArray = cases.cases || [];
-  const deptCases = casesArray.filter(c => c.department === deptId);
-  const total = deptCases.length;
-  const pending = deptCases.filter(c => c.status === 'Pending').length;
-  const resolved = deptCases.filter(c => c.status === 'Resolved').length;
-  const contempt = deptCases.filter(c => c.writType === 'Contempt').length;
-  return { total, pending, resolved, contempt };
+  if (!cases) return { total: 0, pending: 0, resolved: 0, contempt: 0 }
+  const casesArray = cases.cases || []
+  const deptCases = casesArray.filter((c) => c.department === deptId)
+  const total = deptCases.length
+  const pending = deptCases.filter((c) => c.status === "Pending").length
+  const resolved = deptCases.filter((c) => c.status === "Resolved").length
+  const contempt = deptCases.filter((c) => c.writType === "Contempt").length
+  return { total, pending, resolved, contempt }
 }
 
 type Props = {
-  currentLang: 'en' | 'hi';
-};
+  currentLang: "en" | "hi"
+}
 
 const DashboardChart: React.FC<Props> = ({ currentLang }) => {
-  const [selectedDeptId, setSelectedDeptId] = useState<number | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalCases, setModalCases] = useState<Case[]>([]);
-  const [modalLoading, setModalLoading] = useState(false);
-  const [modalError, setModalError] = useState<string | null>(null);
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalType, setModalType] = useState<'total'|'pending'|'resolved'|'contempt'>('total');
-  const [allCasesModalOpen, setAllCasesModalOpen] = useState(false);
-  const [allCases, setAllCases] = useState<Case[]>([]);
-  const [allCasesLoading, setAllCasesLoading] = useState(false);
-  const [allCasesError, setAllCasesError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const [selectedDeptId, setSelectedDeptId] = useState<number | null>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalCases, setModalCases] = useState<Case[]>([])
+  const [modalLoading, setModalLoading] = useState(false)
+  const [modalError, setModalError] = useState<string | null>(null)
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalType, setModalType] = useState<"total" | "pending" | "resolved" | "contempt">("total")
+  const [allCasesModalOpen, setAllCasesModalOpen] = useState(false)
+  const [allCases, setAllCases] = useState<Case[]>([])
+  const [allCasesLoading, setAllCasesLoading] = useState(false)
+  const [allCasesError, setAllCasesError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   // Use react-query to fetch cases
-  const { data: cases, isLoading, error } = useQuery<{ cases: Case[] }>({
-    queryKey: ['cases'],       // Unique key for this query
-    queryFn: fetchCases,      // Function to fetch the data
+  const {
+    data: cases,
+    isLoading,
+    error,
+  } = useQuery<{ cases: Case[] }, Error>({
+    queryKey: ["cases"], // Unique key for this query
+    queryFn: async () => fetchCases(), // Function to fetch the data, no filters for all cases
     staleTime: 5 * 60 * 1000, // Data is considered "fresh" for 5 minutes
-  });
+  })
 
-  const handleModalOpen = async (departmentId: number, status: 'total' | 'pending' | 'resolved' | 'contempt') => {
-    // If clicking on total cases, navigate to dashboard page
-    if (status === 'total') {
-      navigate(`/department-dashboard/${departmentId}`);
-      return;
-    }
-    
-    setModalOpen(true);
-    setModalCases([]);
-    setModalLoading(true);
-    setModalError(null);
-    setSelectedDeptId(departmentId);
-    setModalType(status);
-    let title = '';
-    if (status === 'pending') title = currentLang === 'hi' ? 'लंबित मामले' : 'Pending Cases';
-    else if (status === 'resolved') title = currentLang === 'hi' ? 'निराकृत मामले' : 'Resolved Cases';
-    else if (status === 'contempt') title = currentLang === 'hi' ? 'अवमानना मामले' : 'Contempt Cases';
-    setModalTitle(title);
+  // Print function for department cases
+  const handlePrintDepartmentCases = async (departmentId: number) => {
     try {
-      const filters: any = { department: departmentId };
-      if (status === 'pending') filters.status = 'Pending';
-      else if (status === 'resolved') filters.status = 'Resolved';
-      else if (status === 'contempt') filters.writType = 'Contempt';
-      const data = await fetchCases(filters);
-      setModalCases(data.cases || []);
-    } catch (err: any) {
-      setModalError(currentLang === 'hi' ? 'मामले लोड नहीं हो सके।' : 'Failed to load cases.');
-    } finally {
-      setModalLoading(false);
+      const data = await fetchCases({ department: departmentId })
+      const departmentCases = data.cases || []
+      const department = departments.find((d) => d.id === departmentId)
+
+      if (departmentCases.length === 0) {
+        alert(currentLang === "hi" ? "इस विभाग में कोई मामला नहीं मिला।" : "No cases found for this department.")
+        return
+      }
+
+      const printWindow = window.open("", "_blank")
+      if (!printWindow) {
+        alert(
+          currentLang === "hi"
+            ? "पॉप-अप ब्लॉक किया गया। कृपया पॉप-अप की अनुमति दें।"
+            : "Popup blocked. Please allow popups.",
+        )
+        return
+      }
+
+      const departmentName = currentLang === "hi" ? department?.name_hi : department?.name_en
+      const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>${currentLang === "hi" ? "विभाग के मामले" : "Department Cases"}</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 20px;
+              color: #333;
+            }
+            .header {
+              text-align: center;
+              margin-bottom: 30px;
+              border-bottom: 2px solid #333;
+              padding-bottom: 10px;
+            }
+            .department-name {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 10px;
+            }
+            .report-title {
+              font-size: 18px;
+              color: #666;
+            }
+            .summary {
+              margin: 20px 0;
+              padding: 15px;
+              background-color: #f5f5f5;
+              border-radius: 5px;
+            }
+            .summary-item {
+              display: inline-block;
+              margin: 5px 15px;
+              font-weight: bold;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 20px;
+            }
+            th, td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+            }
+            th {
+              background-color: #f2f2f2;
+              font-weight: bold;
+            }
+            tr:nth-child(even) {
+              background-color: #f9f9f9;
+            }
+            .print-date {
+              text-align: right;
+              margin-top: 20px;
+              font-size: 12px;
+              color: #666;
+            }
+            @media print {
+              body { margin: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="department-name">${departmentName}</div>
+            <div class="report-title">${currentLang === "hi" ? "मामलों की रिपोर्ट" : "Cases Report"}</div>
+          </div>
+          
+          <div class="summary">
+            <div class="summary-item">${currentLang === "hi" ? "कुल मामले" : "Total Cases"}: ${departmentCases.length}</div>
+            <div class="summary-item">${currentLang === "hi" ? "लंबित" : "Pending"}: ${departmentCases.filter((c) => c.status === "Pending").length}</div>
+            <div class="summary-item">${currentLang === "hi" ? "निराकृत" : "Resolved"}: ${departmentCases.filter((c) => c.status === "Resolved").length}</div>
+            <div class="summary-item">${currentLang === "hi" ? "अवमानना" : "Contempt"}: ${departmentCases.filter((c) => c.writType === "Contempt").length}</div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>${currentLang === "hi" ? "क्र.सं." : "S.No."}</th>
+                <th>${currentLang === "hi" ? "मामला आईडी" : "Case ID"}</th>
+                <th>${currentLang === "hi" ? "स्थिति" : "Status"}</th>
+                <th>${currentLang === "hi" ? "रिट प्रकार" : "Writ Type"}</th>
+                <th>${currentLang === "hi" ? "सुनवाई तिथि" : "Hearing Date"}</th>
+                <th>${currentLang === "hi" ? "विवरण" : "Description"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${departmentCases
+                .map(
+                  (c, index) => `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>${c.caseNumber || c.id}</td>
+                  <td>${currentLang === "hi" ? (c.status === "Pending" ? "लंबित" : "निराकृत") : c.status}</td>
+                  <td>${c.writType || "-"}</td>
+                  <td>${c.hearingDate ? new Date(c.hearingDate).toLocaleDateString() : "-"}</td>
+                  <td>${c.description || "-"}</td>
+                </tr>
+              `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+          
+          <div class="print-date">
+            ${currentLang === "hi" ? "प्रिंट तिथि" : "Print Date"}: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}
+          </div>
+        </body>
+        </html>
+      `
+
+      printWindow.document.write(printContent)
+      printWindow.document.close()
+      printWindow.focus()
+      printWindow.print()
+    } catch (err) {
+      console.error("Print error:", err)
+      alert(currentLang === "hi" ? "प्रिंट करने में त्रुटि हुई।" : "Error occurred while printing.")
     }
-  };
+  }
+
+  const handleModalOpen = async (departmentId: number, status: "total" | "pending" | "resolved" | "contempt") => {
+    // If clicking on total cases, navigate to dashboard page
+    if (status === "total") {
+      navigate(`/department-dashboard/${departmentId}`)
+      return
+    }
+
+    setModalOpen(true)
+    setModalCases([])
+    setModalLoading(true)
+    setModalError(null)
+    setSelectedDeptId(departmentId)
+    setModalType(status)
+    let title = ""
+    if (status === "pending") title = currentLang === "hi" ? "लंबित मामले" : "Pending Cases"
+    else if (status === "resolved") title = currentLang === "hi" ? "निराकृत मामले" : "Resolved Cases"
+    else if (status === "contempt") title = currentLang === "hi" ? "अवमानना मामले" : "Contempt Cases"
+    setModalTitle(title)
+
+    try {
+      const filters: any = { department: departmentId }
+      if (status === "pending") filters.status = "Pending"
+      else if (status === "resolved") filters.status = "Resolved"
+      else if (status === "contempt") filters.writType = "Contempt"
+      const data = await fetchCases(filters)
+      setModalCases(data.cases || [])
+    } catch (err: any) {
+      setModalError(currentLang === "hi" ? "मामले लोड नहीं हो सके।" : "Failed to load cases.")
+    } finally {
+      setModalLoading(false)
+    }
+  }
 
   const handleAllCasesModalOpen = async () => {
-    setAllCasesModalOpen(true);
-    setAllCases([]);
-    setAllCasesLoading(true);
-    setAllCasesError(null);
+    setAllCasesModalOpen(true)
+    setAllCases([])
+    setAllCasesLoading(true)
+    setAllCasesError(null)
     try {
-      const data = await fetchCases();
-      setAllCases(data.cases || []);
+      const data = await fetchCases()
+      setAllCases(data.cases || [])
     } catch (err: any) {
-      setAllCasesError(currentLang === 'hi' ? 'मामले लोड नहीं हो सके।' : 'Failed to load cases.');
+      setAllCasesError(currentLang === "hi" ? "मामले लोड नहीं हो सके।" : "Failed to load cases.")
     } finally {
-      setAllCasesLoading(false);
+      setAllCasesLoading(false)
     }
-  };
+  }
 
   // Show SubDepartmentData only for Administration Department (id: 1)
   if (selectedDeptId) {
     return (
       <div>
-        <SubDepartmentData 
+        <SubDepartmentData
           departmentId={selectedDeptId}
           currentLang={currentLang}
           onBack={() => setSelectedDeptId(null)}
         />
       </div>
-    );
+    )
   }
 
   if (isLoading) {
-    return <div className="text-center py-8 text-blue-700 font-semibold">Loading reports...</div>;
+    return <div className="text-center py-8 text-blue-700 font-semibold">Loading reports...</div>
   }
 
   if (error) {
-    console.error("Error fetching cases:", error);
-    return <div className="text-center py-8 text-red-500 font-semibold">Error loading reports.</div>;
+    console.error("Error fetching cases:", error)
+    return <div className="text-center py-8 text-red-500 font-semibold">Error loading reports.</div>
   }
 
   return (
@@ -169,34 +332,44 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
       <Dialog open={allCasesModalOpen} onOpenChange={setAllCasesModalOpen}>
         <DialogContent className="max-w-3xl w-full">
           <DialogHeader>
-            <DialogTitle>{currentLang === 'hi' ? 'सभी मामले' : 'All Cases'}</DialogTitle>
+            <DialogTitle>{currentLang === "hi" ? "सभी मामले" : "All Cases"}</DialogTitle>
           </DialogHeader>
           {allCasesLoading ? (
-            <div className="py-8 text-center">{currentLang === 'hi' ? 'लोड हो रहा है...' : 'Loading...'}</div>
+            <div className="py-8 text-center">{currentLang === "hi" ? "लोड हो रहा है..." : "Loading..."}</div>
           ) : allCasesError ? (
             <div className="py-8 text-center text-red-500">{allCasesError}</div>
           ) : allCases.length === 0 ? (
-            <div className="py-8 text-center text-gray-500">{currentLang === 'hi' ? 'कोई मामला नहीं मिला' : 'No cases found.'}</div>
+            <div className="py-8 text-center text-gray-500">
+              {currentLang === "hi" ? "कोई मामला नहीं मिला" : "No cases found."}
+            </div>
           ) : (
             <div className="overflow-x-auto max-h-[60vh]">
               <table className="min-w-full text-sm">
                 <thead>
                   <tr>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'मामला आईडी' : 'Case ID'}</th>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'स्थिति' : 'Status'}</th>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'रिट प्रकार' : 'Writ Type'}</th>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'विभाग' : 'Department'}</th>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'सुनवाई तिथि' : 'Hearing Date'}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "मामला आईडी" : "Case ID"}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "स्थिति" : "Status"}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "रिट प्रकार" : "Writ Type"}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "विभाग" : "Department"}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "सुनवाई तिथि" : "Hearing Date"}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {allCases.map((c) => (
                     <tr key={c.id}>
                       <td className="p-2 border-b font-medium">{c.caseNumber || c.id}</td>
-                      <td className="p-2 border-b">{currentLang === 'hi' ? (c.status === 'Pending' ? 'लंबित' : 'निराकृत') : c.status}</td>
+                      <td className="p-2 border-b">
+                        {currentLang === "hi" ? (c.status === "Pending" ? "लंबित" : "निराकृत") : c.status}
+                      </td>
                       <td className="p-2 border-b">{c.writType}</td>
-                      <td className="p-2 border-b">{currentLang === 'hi' ? (departments.find(d => d.id === c.department)?.name_hi || '-') : (departments.find(d => d.id === c.department)?.name_en || '-')}</td>
-                      <td className="p-2 border-b">{c.hearingDate ? new Date(c.hearingDate).toLocaleDateString() : '-'}</td>
+                      <td className="p-2 border-b">
+                        {currentLang === "hi"
+                          ? departments.find((d) => d.id === c.department)?.name_hi || "-"
+                          : departments.find((d) => d.id === c.department)?.name_en || "-"}
+                      </td>
+                      <td className="p-2 border-b">
+                        {c.hearingDate ? new Date(c.hearingDate).toLocaleDateString() : "-"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -204,115 +377,149 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
             </div>
           )}
           <DialogClose asChild>
-            <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">{currentLang === 'hi' ? 'बंद करें' : 'Close'}</button>
+            <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+              {currentLang === "hi" ? "बंद करें" : "Close"}
+            </button>
           </DialogClose>
         </DialogContent>
       </Dialog>
+
       {/* All Cases Button */}
       <div className="flex justify-end mb-4">
         <button
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold"
           onClick={handleAllCasesModalOpen}
         >
-          {currentLang === 'hi' ? 'सभी मामले' : 'All Cases'}
+          {currentLang === "hi" ? "सभी मामले" : "All Cases"}
         </button>
       </div>
+
       {/* Modal for department cases */}
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="max-w-3xl w-full">
           <DialogHeader>
             <DialogTitle>
-              {modalTitle} {selectedDeptId && (
+              {modalTitle}{" "}
+              {selectedDeptId && (
                 <span className="text-base font-normal ml-2">
                   (
-                  {currentLang === 'hi'
-                    ? departments.find(d => d.id === selectedDeptId)?.name_hi
-                    : departments.find(d => d.id === selectedDeptId)?.name_en}
+                  {currentLang === "hi"
+                    ? departments.find((d) => d.id === selectedDeptId)?.name_hi
+                    : departments.find((d) => d.id === selectedDeptId)?.name_en}
                   )
                 </span>
               )}
             </DialogTitle>
           </DialogHeader>
           {modalLoading ? (
-            <div className="py-8 text-center">{currentLang === 'hi' ? 'लोड हो रहा है...' : 'Loading...'}</div>
+            <div className="py-8 text-center">{currentLang === "hi" ? "लोड हो रहा है..." : "Loading..."}</div>
           ) : modalError ? (
             <div className="py-8 text-center text-red-500">{modalError}</div>
           ) : modalCases.length === 0 ? (
-            <div className="py-8 text-center text-gray-500">{currentLang === 'hi' ? 'कोई मामला नहीं मिला' : 'No cases found.'}</div>
+            <div className="py-8 text-center text-gray-500">
+              {currentLang === "hi" ? "कोई मामला नहीं मिला" : "No cases found."}
+            </div>
           ) : (
             <div className="overflow-x-auto max-h-[60vh]">
               <table className="min-w-full text-sm">
                 <thead>
                   <tr>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'मामला आईडी' : 'Case ID'}</th>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'स्थिति' : 'Status'}</th>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'रिट प्रकार' : 'Writ Type'}</th>
-                    <th className="p-2 border-b">{currentLang === 'hi' ? 'सुनवाई तिथि' : 'Hearing Date'}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "मामला आईडी" : "Case ID"}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "स्थिति" : "Status"}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "रिट प्रकार" : "Writ Type"}</th>
+                    <th className="p-2 border-b">{currentLang === "hi" ? "सुनवाई तिथि" : "Hearing Date"}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {modalCases.map((c) => (
                     <tr key={c.id}>
                       <td className="p-2 border-b font-medium">{c.caseNumber || c.id}</td>
-                      <td className="p-2 border-b">{currentLang === 'hi' ? (c.status === 'Pending' ? 'लंबित' : 'निराकृत') : c.status}</td>
+                      <td className="p-2 border-b">
+                        {currentLang === "hi" ? (c.status === "Pending" ? "लंबित" : "निराकृत") : c.status}
+                      </td>
                       <td className="p-2 border-b">{c.writType}</td>
-                      <td className="p-2 border-b">{c.hearingDate ? new Date(c.hearingDate).toLocaleDateString() : '-'}</td>
+                      <td className="p-2 border-b">
+                        {c.hearingDate ? new Date(c.hearingDate).toLocaleDateString() : "-"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           )}
-          <DialogClose asChild>
-            <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">{currentLang === 'hi' ? 'बंद करें' : 'Close'}</button>
-          </DialogClose>
+          <div className="flex gap-2 mt-4">
+            <button
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              onClick={() => selectedDeptId && handlePrintDepartmentCases(selectedDeptId)}
+            >
+              {currentLang === "hi" ? "🖨️ प्रिंट करें" : "🖨️ Print"}
+            </button>
+            <DialogClose asChild>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                {currentLang === "hi" ? "बंद करें" : "Close"}
+              </button>
+            </DialogClose>
+          </div>
         </DialogContent>
       </Dialog>
+
       <table className="min-w-full border-separate border-spacing-y-2">
         <thead>
           <tr>
-            <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold rounded-tl-lg">#</th>
-            <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold">
-              {currentLang === 'hi' ? 'विभाग' : 'Department'}
+            <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold rounded-tl-lg">
+              #
             </th>
             <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold">
-              {currentLang === 'hi' ? 'कुल मामले' : 'Total Cases'}
+              {currentLang === "hi" ? "विभाग" : "Department"}
             </th>
             <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold">
-              {currentLang === 'hi' ? 'लंबित' : 'Pending Cases'}
+              {currentLang === "hi" ? "कुल मामले" : "Total Cases"}
             </th>
             <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold">
-              {currentLang === 'hi' ? 'निराकृत' : 'Resolved Cases'}
+              {currentLang === "hi" ? "लंबित" : "Pending Cases"}
+            </th>
+            <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold">
+              {currentLang === "hi" ? "निराकृत" : "Resolved Cases"}
+            </th>
+            <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold">
+              {currentLang === "hi" ? "अवमानना मामले" : "Contempt Cases"}
             </th>
             <th className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 font-semibold rounded-tr-lg">
-              {currentLang === 'hi' ? 'अवमानना मामले' : 'Contempt Cases'}
+              {currentLang === "hi" ? "कार्य" : "Actions"}
             </th>
           </tr>
         </thead>
         <tbody>
           {departments.map((dept, idx) => {
             // Calculate stats based on the fetched 'cases' data
-            const stats = getDepartmentStats(dept.id, cases);
+            const stats = getDepartmentStats(dept.id, cases)
             return (
-              <tr key={dept.id} className="transition-all duration-200 hover:scale-[1.01] hover:shadow-md hover:bg-blue-50">
+              <tr
+                key={dept.id}
+                className="transition-all duration-200 hover:scale-[1.01] hover:shadow-md hover:bg-blue-50"
+              >
                 <td className="p-3 text-center rounded-l-lg">{idx + 1}</td>
                 <td
                   className="p-3 font-semibold cursor-pointer text-black hover:text-gray-800"
                   role="button"
                   tabIndex={0}
                   onClick={() => setSelectedDeptId(dept.id)}
-                  onKeyPress={e => { if (e.key === 'Enter') setSelectedDeptId(dept.id); }}
-                  title={currentLang === 'hi' ? 'विभाग के आँकड़े देखें' : 'View department stats'}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") setSelectedDeptId(dept.id)
+                  }}
+                  title={currentLang === "hi" ? "विभाग के आँकड़े देखें" : "View department stats"}
                 >
-                  {currentLang === 'hi' ? dept.name_hi : dept.name_en}
+                  {currentLang === "hi" ? dept.name_hi : dept.name_en}
                 </td>
                 <td
                   className="p-3 text-center font-bold text-blue-700 bg-blue-100 rounded cursor-pointer hover:underline"
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleModalOpen(dept.id, 'total')}
-                  onKeyPress={e => { if (e.key === 'Enter') handleModalOpen(dept.id, 'total'); }}
-                  title={currentLang === 'hi' ? 'कुल मामले देखें' : 'View total cases'}
+                  onClick={() => handleModalOpen(dept.id, "total")}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") handleModalOpen(dept.id, "total")
+                  }}
+                  title={currentLang === "hi" ? "कुल मामले देखें" : "View total cases"}
                 >
                   {stats.total}
                 </td>
@@ -320,9 +527,11 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
                   className="p-3 text-center font-bold text-yellow-700 bg-yellow-100 rounded cursor-pointer hover:underline"
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleModalOpen(dept.id, 'pending')}
-                  onKeyPress={e => { if (e.key === 'Enter') handleModalOpen(dept.id, 'pending'); }}
-                  title={currentLang === 'hi' ? 'लंबित मामले देखें' : 'View pending cases'}
+                  onClick={() => handleModalOpen(dept.id, "pending")}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") handleModalOpen(dept.id, "pending")
+                  }}
+                  title={currentLang === "hi" ? "लंबित मामले देखें" : "View pending cases"}
                 >
                   {stats.pending}
                 </td>
@@ -330,29 +539,42 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
                   className="p-3 text-center font-bold text-green-700 bg-green-100 rounded cursor-pointer hover:underline"
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleModalOpen(dept.id, 'resolved')}
-                  onKeyPress={e => { if (e.key === 'Enter') handleModalOpen(dept.id, 'resolved'); }}
-                  title={currentLang === 'hi' ? 'निराकृत मामले देखें' : 'View resolved cases'}
+                  onClick={() => handleModalOpen(dept.id, "resolved")}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") handleModalOpen(dept.id, "resolved")
+                  }}
+                  title={currentLang === "hi" ? "निराकृत मामले देखें" : "View resolved cases"}
                 >
                   {stats.resolved}
                 </td>
                 <td
-                  className="p-3 text-center font-bold text-purple-700 bg-purple-100 rounded-r-lg cursor-pointer hover:underline"
+                  className="p-3 text-center font-bold text-purple-700 bg-purple-100 rounded cursor-pointer hover:underline"
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleModalOpen(dept.id, 'contempt')}
-                  onKeyPress={e => { if (e.key === 'Enter') handleModalOpen(dept.id, 'contempt'); }}
-                  title={currentLang === 'hi' ? 'अवमानना मामले देखें' : 'View contempt cases'}
+                  onClick={() => handleModalOpen(dept.id, "contempt")}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") handleModalOpen(dept.id, "contempt")
+                  }}
+                  title={currentLang === "hi" ? "अवमानना मामले देखें" : "View contempt cases"}
                 >
                   {stats.contempt}
                 </td>
+                <td className="p-3 text-center rounded-r-lg">
+                  <button
+                    className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors"
+                    onClick={() => handlePrintDepartmentCases(dept.id)}
+                    title={currentLang === "hi" ? "विभाग के सभी मामले प्रिंट करें" : "Print all department cases"}
+                  >
+                    {currentLang === "hi" ? "🖨️ प्रिंट" : "🖨️ Print"}
+                  </button>
+                </td>
               </tr>
-            );
+            )
           })}
         </tbody>
       </table>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardChart;
+export default DashboardChart

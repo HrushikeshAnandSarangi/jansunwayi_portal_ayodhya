@@ -8,11 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Configure CORS with specific options
-app.use(cors({
-  origin: ['http://localhost:8080', 'http://127.0.0.1:8080','https://jansunwayi-portal-ayodhya.vercel.app/'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 
 app.use(express.json());
 
