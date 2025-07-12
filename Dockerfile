@@ -1,37 +1,61 @@
-# ----------------------------
+# Multi-stage Dockerfile for React (Vite) + Express.js with PM2
+
 # Stage 1: Build React frontend
-# ----------------------------
-FROM node:18 AS builder
+FROM node:18-alpine AS frontend-build
 
-WORKDIR /app
+# Set working directory for frontend
+WORKDIR /app/frontend
 
-# Copy only necessary files for faster rebuilds
+# Copy package.json and package-lock.json for frontend
 COPY package*.json ./
-COPY vite.config.* ./
-COPY public ./public
-COPY src ./src
 
-RUN npm install
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci
+
+# Copy frontend source code
+COPY . .
+
+# Build the React app
 RUN npm run build
 
-# ----------------------------
-# Stage 2: Run Express server
-# ----------------------------
-FROM node:18 AS server
+# Stage 2: Setup production environment with both apps
+FROM node:18-alpine AS production
 
+# Install PM2 globally
+RUN npm install -g pm2
+
+# Create directories for both apps
+RUN mkdir -p /app/frontend /app/backend
+
+# Setup Backend
+WORKDIR /app/backend
+
+# Copy backend package files
+COPY server/package*.json ./
+
+# Install backend dependencies
+RUN npm ci --only=production
+
+# Copy backend source code
+COPY server/ ./
+
+# Setup Frontend
+WORKDIR /app/frontend
+
+# Copy built frontend from previous stage
+COPY --from=frontend-build /app/frontend/dist ./
+
+# Install serve for serving static files
+RUN npm init -y && npm install serve
+
+# Copy PM2 ecosystem file
+COPY ecosystem.config.js /app/
+
+# Expose both ports
+EXPOSE 5000 8080
+
+# Set working directory to app root
 WORKDIR /app
 
-# Copy Express server
-COPY server ./server
-COPY server/package.json ./server/package.json
-
-# Install server dependencies
-RUN cd server && npm install
-
-# Copy built frontend from builder
-COPY --from=builder /app/dist ./dist
-
-EXPOSE 3000
-
-# Run Express server
-CMD ["node", "server/index.js"]
+# Start both services with PM2
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]

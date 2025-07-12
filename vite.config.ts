@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
     proxy: {
       '/api': {
-        target: 'https://jansunwayi-portal-ayodhya.onrender.com/',
+        target: 'http://localhost:5000/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

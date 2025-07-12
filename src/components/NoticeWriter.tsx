@@ -45,7 +45,7 @@ interface NoticeData {
   designation: string
 }
 
-const API_BASE = "https://jansunwayi-portal-ayodhya.onrender.com/"
+const API_BASE = "http://localhost:5000/"
 
 const printStyles = `
   @media print {

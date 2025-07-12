@@ -29,7 +29,7 @@ let cacheTimestamp = 0;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 // Base URL for API calls
-const API_BASE = '/api';
+const API_BASE = 'http://localhost:5000';
 
 // ===== CASE API FUNCTIONS =====
 
