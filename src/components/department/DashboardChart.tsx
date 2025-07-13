@@ -102,9 +102,9 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
     data: cases,
     isLoading,
     error,
-  } = useQuery<{ cases: Case[] }, Error>({
+  } = useQuery<{ cases: Case[] }>({
     queryKey: ["cases"], // Unique key for this query
-    queryFn: async () => fetchCases(), // Function to fetch the data, no filters for all cases
+    queryFn: async () => fetchCases(), // Adapted to match React Query's expected signature
     staleTime: 5 * 60 * 1000, // Data is considered "fresh" for 5 minutes
   })
 
@@ -172,11 +172,14 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
               width: 100%;
               border-collapse: collapse;
               margin-top: 20px;
+              font-size: 10px; /* Smaller font to fit more columns */
             }
             th, td {
               border: 1px solid #ddd;
-              padding: 8px;
+              padding: 6px 4px; /* Reduced padding for more columns */
               text-align: left;
+              word-wrap: break-word;
+              max-width: 120px; /* Limit column width */
             }
             th {
               background-color: #f2f2f2;
@@ -217,23 +220,29 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
                 <th>${currentLang === "hi" ? "मामला आईडी" : "Case ID"}</th>
                 <th>${currentLang === "hi" ? "स्थिति" : "Status"}</th>
                 <th>${currentLang === "hi" ? "रिट प्रकार" : "Writ Type"}</th>
+                <th>${currentLang === "hi" ? "विभाग" : "Department"}</th>
                 <th>${currentLang === "hi" ? "सुनवाई तिथि" : "Hearing Date"}</th>
                 <th>${currentLang === "hi" ? "विवरण" : "Description"}</th>
+                <th>${currentLang === "hi" ? "आवेदक का नाम" : "Applicant Name"}</th>
+                <th>${currentLang === "hi" ? "मामले का प्रकार" : "Case Type"}</th>
               </tr>
             </thead>
             <tbody>
               ${departmentCases
                 .map(
                   (c, index) => `
-                <tr>
-                  <td>${index + 1}</td>
-                  <td>${c.caseNumber || c.id}</td>
-                  <td>${currentLang === "hi" ? (c.status === "Pending" ? "लंबित" : "निराकृत") : c.status}</td>
-                  <td>${c.writType || "-"}</td>
-                  <td>${c.hearingDate ? new Date(c.hearingDate).toLocaleDateString() : "-"}</td>
-                  <td>${c.description || "-"}</td>
-                </tr>
-              `,
+              <tr>
+                <td>${index + 1}</td>
+                <td>${c.caseNumber || c.id}</td>
+                <td>${currentLang === "hi" ? (c.status === "Pending" ? "लंबित" : "निराकृत") : c.status}</td>
+                <td>${c.writType || "-"}</td>
+                <td>${departmentName}</td>
+                <td>${c.hearingDate ? new Date(c.hearingDate).toLocaleDateString() : "-"}</td>
+                <td>${c.description || "-"}</td>
+                <td>${c.applicantName || "-"}</td>
+                <td>${c.caseType || "-"}</td>
+              </tr>
+            `,
                 )
                 .join("")}
             </tbody>
@@ -492,7 +501,7 @@ const DashboardChart: React.FC<Props> = ({ currentLang }) => {
         <tbody>
           {departments.map((dept, idx) => {
             // Calculate stats based on the fetched 'cases' data
-            const stats = getDepartmentStats(dept.id, cases)
+            const stats = getDepartmentStats(dept.id, cases as { cases: Case[] } | undefined)
             return (
               <tr
                 key={dept.id}
