@@ -23,7 +23,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Input } from '@/components/ui/input';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { fetchCases, deleteCase, updateCase } from '@/lib/api';
+import { fetchCases, deleteCase, updateCase, fetchCaseById } from '@/lib/api';
 
 // Mock data for demonstration
 const getMockCase = (id: string) => {
@@ -102,7 +102,7 @@ const CaseDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      const mockCase = getMockCase(id);
+      const mockCase = fetchCaseById(id);
       setCaseData(mockCase);
       setEditedData(mockCase);
     }
