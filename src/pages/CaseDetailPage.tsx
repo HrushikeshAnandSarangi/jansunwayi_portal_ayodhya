@@ -23,7 +23,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Input } from '@/components/ui/input';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { fetchCases, deleteCase, updateCase, fetchCaseById } from '@/lib/api';
+import {  deleteCase, updateCase, fetchCaseById } from '@/lib/api';
 
 // Mock data for demonstration
 const getMockCase = (id: string) => {
@@ -100,13 +100,23 @@ const CaseDetailPage: React.FC = () => {
   const [reminderEmail, setReminderEmail] = useState('');
   const [sending, setSending] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
+  const loadCase = async () => {
     if (id) {
-      const mockCase = fetchCaseById(id);
-      setCaseData(mockCase);
-      setEditedData(mockCase);
+      try {
+        const data = await fetchCaseById(id); // ✅ await the result
+        setCaseData(data);
+        setEditedData(data);
+      } catch (err) {
+        toast.error("Failed to fetch case");
+        navigate('/dashboard');
+      }
     }
-  }, [id]);
+  };
+
+  loadCase(); // Call the async function
+}, [id]);
+
 
   // SubDepartment state
   const [selectedSubDepartment, setSelectedSubDepartment] = useState('');
@@ -435,7 +445,10 @@ const CaseDetailPage: React.FC = () => {
               </Popover>
             ) : (
               <div className="text-gray-900">
-                {format(caseData.filingDate, "PPP")}
+                {caseData.filingDate && !isNaN(new Date(caseData.filingDate).getTime())
+                  ? format(new Date(caseData.filingDate), "PPP")
+                  : '-'}
+
               </div>
             )}
           </div>
@@ -701,9 +714,11 @@ const CaseDetailPage: React.FC = () => {
                 </PopoverContent>
               </Popover>
             ) : (
-              <div className="px-3 py-2 border border-gray-200 rounded-md bg-gray-50">
-                {caseData.affidavitDueDate ? format(caseData.affidavitDueDate, 'yyyy-MM-dd') : '-'}
-              </div>
+            <div className="text-gray-900">
+              {caseData.filingDate && !isNaN(new Date(caseData.filingDate).getTime())
+                ? format(new Date(caseData.filingDate), "PPP")
+                : '-'}
+            </div>
             )}
           </div>
 
@@ -739,7 +754,9 @@ const CaseDetailPage: React.FC = () => {
               </Popover>
             ) : (
               <div className="px-3 py-2 border border-gray-200 rounded-md bg-gray-50">
-                {caseData.affidavitSubmissionDate ? format(caseData.affidavitSubmissionDate, 'yyyy-MM-dd') : '-'}
+                {caseData.affidavitSubmissionDate && !isNaN(new Date(caseData.affidavitSubmissionDate).getTime()) 
+                  ? format(new Date(caseData.affidavitSubmissionDate), 'yyyy-MM-dd') 
+                  : '-'}
               </div>
             )}
           </div>
