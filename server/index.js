@@ -150,6 +150,29 @@ app.get('/cases', async (req, res) => {
   }
 });
 
+// Update case
+app.put('/cases/:id', async (req, res) => {
+  try {
+    const caseId = req.params.id;
+    const updateData = { ...req.body, updatedAt: new Date() };
+
+    const updatedCase = await Case.findByIdAndUpdate(
+      caseId,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCase) {
+      return res.status(404).json({ error: 'Case not found' });
+    }
+
+    res.json(updatedCase);
+  } catch (err) {
+    console.error('Error updating case:', err);
+    res.status(500).json({ error: 'Failed to update case' });
+  }
+});
+
 // Get case by ID
 app.get('/cases/:id', async (req, res) => {
   try {
