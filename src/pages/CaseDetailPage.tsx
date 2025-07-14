@@ -419,7 +419,9 @@ const CaseDetailPage: React.FC = () => {
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {editedData.filingDate ? format(editedData.filingDate, "PPP") : <span>{t.selectDate}</span>}
+                    {editedData.filingDate && !isNaN(new Date(editedData.filingDate).getTime()) 
+                      ? format(new Date(editedData.filingDate), "PPP") 
+                      : <span>{t.selectDate}</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -609,8 +611,8 @@ const CaseDetailPage: React.FC = () => {
                     className="w-full justify-start text-left font-normal"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {editedData.hearingDate ? (
-                      format(editedData.hearingDate, "PPP")
+                    {editedData.hearingDate && !isNaN(new Date(editedData.hearingDate).getTime()) ? (
+                      format(new Date(editedData.hearingDate), "PPP")
                     ) : (
                       <span>{t.selectDate}</span>
                     )}
@@ -681,11 +683,11 @@ const CaseDetailPage: React.FC = () => {
                     className="w-full justify-start text-left font-normal"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {editedData.affidavitDueDate ? (
-                      format(editedData.affidavitDueDate, "PPP")
-                    ) : (
-                      <span>{t.selectDate}</span>
-                    )}
+                      {editedData.affidavitDueDate && !isNaN(new Date(editedData.affidavitDueDate).getTime()) ? (
+                        format(new Date(editedData.affidavitDueDate), "PPP")
+                      ) : (
+                        <span>{t.selectDate}</span>
+                      )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
@@ -718,11 +720,11 @@ const CaseDetailPage: React.FC = () => {
                     className="w-full justify-start text-left font-normal"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {editedData.affidavitSubmissionDate ? (
-                      format(editedData.affidavitSubmissionDate, "PPP")
-                    ) : (
-                      <span>{t.selectDate}</span>
-                    )}
+                      {editedData.affidavitSubmissionDate && !isNaN(new Date(editedData.affidavitSubmissionDate).getTime()) ? (
+                        format(new Date(editedData.affidavitSubmissionDate), "PPP")
+                      ) : (
+                        <span>{t.selectDate}</span>
+                      )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
