@@ -566,21 +566,34 @@ app.post('/admin/login', async (req, res) => {
 // Seed admin user endpoint (run once, then can be removed)
 app.post('/admin/seed', async (req, res) => {
   try {
-    const email = 'admincourt@gmail.com';
-    const plainPassword = 'Admin@123';
-    let admin = await Admin.findOne({ email });
-    if (admin) {
-      return res.json({ message: 'Admin already exists' });
+    const adminUsers = [
+      { email: 'admincourt@gmail.com', password: 'Admin@123' },
+      { email: 'courtadmin@gmail.com', password: 'Admin2@123' }
+    ];
+
+    const results = [];
+
+    for (const { email, password } of adminUsers) {
+      let admin = await Admin.findOne({ email });
+
+      if (admin) {
+        results.push({ email, status: 'Already exists' });
+        continue;
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      admin = new Admin({ email, password: hashedPassword });
+      await admin.save();
+      results.push({ email, status: 'Created' });
     }
-    const hashedPassword = await bcrypt.hash(plainPassword, 10);
-    admin = new Admin({ email, password: hashedPassword });
-    await admin.save();
-    res.json({ message: 'Admin user created', email });
+
+    res.json({ message: 'Admin seeding complete', results });
   } catch (err) {
     console.error('Admin seed error:', err);
-    res.status(500).json({ error: 'Failed to seed admin user' });
+    res.status(500).json({ error: 'Failed to seed admin users' });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
