@@ -124,7 +124,7 @@ export default function CourtNoticeWriter() {
       // Generate HTML content for email
       const emailHtml = generateEmailHTML()
 
-      const response = await fetch(`${API_BASE}/send-email`, {
+      const response = await fetch(`${API_BASE}send-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
