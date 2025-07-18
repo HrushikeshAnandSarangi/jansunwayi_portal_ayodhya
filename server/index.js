@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -149,7 +150,52 @@ app.get('/cases', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch cases' });
   }
 });
+app.post('/send-email', async (req, res) => {
+  try {
+    const { to, subject, html } = req.body;
 
+    // Validate required fields
+    if (!to || !subject || !html) {
+      return res.status(400).json({ error: 'Missing required fields: to, subject, html' });
+    }
+
+    // Create transporter with Gmail SMTP
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: "jrkwrit53@gmail.com", // Your Gmail address
+        pass: "bqvd jtyv dilm pnnr", // Your Gmail App Password
+      },
+    });
+
+    // Email options
+    const mailOptions = {
+      from: {
+        name: 'District Magistrate Office, Ayodhya',
+        address: process.env.GMAIL_USER || '',
+      },
+      to: to,
+      subject: subject,
+      html: html,
+      attachments: [], // You can add PDF attachments here if needed
+    };
+
+    // Send email
+    const info = await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({
+      success: true,
+      messageId: info.messageId,
+      message: 'Email sent successfully',
+    });
+  } catch (error) {
+    console.error('Email sending error:', error);
+    return res.status(500).json({
+      error: 'Failed to send email',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
 // Update case
 app.put('/cases/:id', async (req, res) => {
   try {
